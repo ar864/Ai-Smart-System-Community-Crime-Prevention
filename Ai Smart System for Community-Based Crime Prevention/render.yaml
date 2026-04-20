@@ -1,0 +1,31 @@
+services:
+  - type: web_service
+    name: backend
+    env: node
+    buildCommand: npm install --workspaces && npm run build --workspace frontend
+    startCommand: npm run start --workspace backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        type: secret
+      - key: MONGO_URI
+        type: secret
+      - key: AI_SERVICE_URL
+        type: secret
+    routes:
+      - path: /
+      - path: /api/*
+    autoDeploy: true
+
+  - type: web_service
+    name: ai-service
+    env: python
+    buildCommand: pip install -r ai-service/requirements.txt
+    startCommand: gunicorn --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 app.main:app
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+    routes:
+      - path: /ai/*
+    autoDeploy: true

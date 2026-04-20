@@ -62,3 +62,19 @@ uvicorn app.main:app --reload
 
 - Set backend env vars in `backend/.env` from `backend/.env.example`.
 - `POST /api/predict-risk` proxies request to FastAPI service.
+
+## Deploy to Render
+
+This project is ready to deploy to Render with `render.yaml` in the repository root.
+
+1. Push this repository to GitHub.
+2. Go to https://render.com and connect your GitHub repository.
+3. Create a new service using the `render.yaml` file.
+4. Set the secret environment variables in Render:
+   - `JWT_SECRET`
+   - `MONGO_URI`
+   - `AI_SERVICE_URL`
+5. Add a custom domain in Render, for example:
+   `smart-system-for-community-based-crime-prevention.com`
+
+After Render deploys, the live app will be available at your HTTPS domain.
